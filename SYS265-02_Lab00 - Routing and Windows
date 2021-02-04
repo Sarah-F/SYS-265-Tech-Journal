@@ -56,5 +56,38 @@ tyoe sconfig
   Computer Name:  ad01-yourname
   Manual Windows Update
   
-  click 8 to change network settings
+ click 8 to change network settings
+ Click 1
+ select static
+ enter info
+ select 2 for preferred dns
+ enter info
+ select 4 to exit to main part
+ select 13 to reboot
+ serlect 15?? for exit command line
+ Type powershell
+ Type Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+ Type Install-ADDSForest -DomainName sarah.local
+ select A
  
+ Join WKS01 to the domain: type Add-Computer –DomainName sarah.local -restart
+--> this didn't work, typed command on both AD01 and WKS01, tried diff variations
+	Add-Computer –DomainName sarah.local -restart
+	Add-Computer –DomainName wks01 -restart
+	Add-Computer –DomainName wks01-SARAH -restart
+
+MGMT01
+4. On mgmt01 click edit and change Network Adapter 1 from WAN to LAN
+log on and select ethernet settings 
+MGMT01 should have the IP address of 10.0.5.10
+gateway of 10.0.5.2
+DNS should be set to the IP of ad01(10.0.5.5) 
+Hostname should be mgmt01-firstname
+Join it to yourname.local
+
+...
+Feature inst...all on MGMT
+
+Domain USers
+...
+
