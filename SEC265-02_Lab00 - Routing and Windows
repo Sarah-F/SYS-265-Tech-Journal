@@ -1,0 +1,60 @@
+IP = 10.0.17.115
+WAN Default Gateway: 10.0.17.2
+ad01: 10.0.5.5
+mgmt01: 10.0.5.10
+wks01: 10.0.5.100
+web01: 10.0.5.200
+
+FW01
+1. On FW01 click edit and change Network Adapter 2 from WAN to LAN
+  Load FW01
+  Click 2
+  Change the WAN IP to 10.0.17.115
+  Change the LAN IP to 10.0.5.2
+  Use 24 for subnet
+  (Click no or enter for all other options)
+  PROBLEMS ON FWO1: cant ping google
+  
+wks01  
+2. On wks01 click edit and change Network Adapter 1 from WAN to LAN
+Go to IPv4 protocols page and 
+  Select Use the following IP Address
+    IP Address: 10.0.5.100
+    Subnet mask: 255.255.255.0
+    Default Gateway: 10.0.5.2
+  Select use the following DNS server addresses
+    Preferred DNS server: 10.0.5.2
+
+COnfigure PFSense
+Go to Chrome and type in 10.0.5.2
+Set up of pfsense
+Step 2 
+  Hostname: fw01
+  Domain: sarah.local
+  Primary DNS Server: 8.8.8.8
+Step 4
+  RFC1918 Networks: deselect Block private networks from entering via WAN
+Steo 6
+  create password
+  
+Create New Local Admin
+  type lusrmgr.msc in search bar
+  ...
+  ...
+  PROBLEMS ON WKS01:
+  Cant create new admin local group
+  cant prung champlain or google
+  
+AD01
+3. On ad01 click edit and change Network Adapter 1 from WAN to LAN
+change pass
+tyoe sconfig
+  IP:  10.0.5.5
+	Netmask: 255.255.255.0
+	Gateway: 10.0.5.2
+	Preferred DNS: 10.0.5.2
+  Computer Name:  ad01-yourname
+  Manual Windows Update
+  
+  click 8 to change network settings
+ 
