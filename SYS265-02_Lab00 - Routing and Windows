@@ -92,3 +92,4 @@ Domain USers
 ...
 
 A lot of things went wrong with this lab, I looked at old labs from SYS255, I have some ideas of where I went wrong but there were also some issues with the vm, I tried to add the Domain users AD DS setting but got errors.
+When trying to add ad01 server, it cant find it bcuz im on reg admin, need adm account, plus no other user option when i log out
