@@ -1,0 +1,35 @@
+Setting up a DHCP server on windows
+
+How to set up a DHCP server on windows
+  1. Log on to MGMT01 and navigate to "All Servers"
+  2. Right click on MGMT01-SARAH and click "Add Roles and Features"
+    3. Click "next" on Before you begin
+    4. Select "Role-based or feature-based installation" and click next
+    5. Select destination server (MGMT-SARAH)
+    6. Under Server Roles, select "DHCP" and click next
+    7. Under features and DHCP Server, click next
+    8. On confirmation page, select automatically restart if required (it's not required though)
+    9. Click install to install DHCP
+    10. When it finishes, select "Configure DHCP Server" and it will open up a page
+    11. Click next on description
+    12. Under Authorization, make sure "Use the following user's credentials" is selected and click commit
+    13. You can now open the DHCP management console (on the left side panel)
+
+B. Setting up a new IP Scope
+    1. Navigate to the DHCP tab, right click on MGMT01 and select "DHCP Manager"
+    2. Select MGMT01 and right click on "IPv4" and select "New Scope"
+    3. Click next in the wizard
+    4. Enter a name and description of the scope
+    5. Enter the following info and click next
+            Start IP     10.0.5.150 
+            End IP       10.0.5.175
+            Length(CIDR) 24
+            Subnet Mask: 255.255.255.0
+    6. Enter any IP Addresses you don't want to be used that are inside of your scope (for our range of 100-150, we can ignore this).
+    7. Enter how long you want the lease to be for and select next
+    8. Click "Yes, I want to configure these options now".
+    9. Enter default gateway (10.0.5.2) and click next
+    10. Enter the IP of the DNS Server that the users should should (10.0.5.5) and click add, then next.
+    11. Skip the WINS servers and select "next"
+    12. Click yes to activate scope now and select next
+    13. Scope is now set up.
