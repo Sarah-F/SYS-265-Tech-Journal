@@ -25,7 +25,7 @@ B. Setting up a new IP Scope
             End IP       10.0.5.175
             Length(CIDR) 24
             Subnet Mask: 255.255.255.0
-    6. Enter any IP Addresses you don't want to be used that are inside of your scope (for our range of 100-150, we can ignore this).
+    6. Enter any IP Addresses you don't want to be used that are inside of your scope (click next).
     7. Enter how long you want the lease to be for and select next
     8. Click "Yes, I want to configure these options now".
     9. Enter default gateway (10.0.5.2) and click next
