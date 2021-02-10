@@ -76,6 +76,8 @@ tyoe sconfig
 	Add-Computer –DomainName wks01 -restart
 	Add-Computer –DomainName wks01-SARAH -restart
 
+MGMT - Join domain on AD01, do same with workstation (doublecheck)
+
 MGMT01
 4. On mgmt01 click edit and change Network Adapter 1 from WAN to LAN
 log on and select ethernet settings 
