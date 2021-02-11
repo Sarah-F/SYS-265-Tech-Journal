@@ -1,0 +1,35 @@
+on Web01 
+  do nmtui, add IP address and change hostname to sarah.local
+  Add a new privileged user, type: 
+    useradd sarah
+    passwd sarah (Enter password twice)
+    usermod -aG wheel sarah
+  
+Configure fw01's SNMP Service
+  On wks01, open chrome and type 10.0.5.2
+  Go to Services and click SNMP from drop down menu
+    SNMP Daemon: click Enable check box
+    SNMP Daemon Settings:
+      System Location: Lakeside
+      System Contact: Sarah Fornaldes
+      Reade Community String: SYS265
+      Interface Binding:
+        Bind Interfaces: LAN
+    Restart the SNMP service
+         Click Start > Control Panel > Type Administrative Tools in search bar
+         In the Administrative Tools form, click the Services shortcut to open the Services form.
+         In the Services form, right-click the SNMP Service and select Restart.
+         Close the Services form.
+
+Open nmon01
+  Change network adapter settings from WAN to LAN sarah.fornaldes
+  nmtui again
+    Add a new privileged user, type: 
+    useradd sarah
+    passwd sarah (Enter password twice)
+    usermod -aG wheel sarah
+
+
+On MGMT01
+  On Local Server go to IE ENhanced Security Configuration and under Administrators click off
+  Open internet, Install putty using link: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
