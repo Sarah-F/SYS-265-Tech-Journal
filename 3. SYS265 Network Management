@@ -33,3 +33,77 @@ Open nmon01
 On MGMT01
   On Local Server go to IE ENhanced Security Configuration and under Administrators click off
   Open internet, Install putty using link: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+
+
+a) Please check nmon's IP on nmon itself and web01
+ip addr del 10.0.5.150/24 dev ens192, 
+b) Please verify web01 + nmon1's DNS records
+nslookup
+
+after nmtui do systemctl restart network
+
+Need to connect web01 and nmon to domain
+
+To add Add nmon01 to DNS on ad01
+
+
+
+how to disable ssh
+vi /etc/ssh/sshd_config
+remove # from permit root loggin change yes to no
+
+1. Allow SSH Access to a user or group
+$ sudo vi /etc/ssh/sshd_config
+Press "i" to enter into insert mode and add or modify the following line:
+AllowUsers sk
+
+
+Web01 
+how to change passwords of users
+passwd (username)
+passwd sarah
+
+download PuTTY
+access web01
+log in as sarah and input on screen command
+exit 
+log in as root
+nano /etc/snmp/snmpd.conf
+  enter the text in box
+  control + o to save
+  control + x to exit ???
+systemctl enable snmpd
+systemctl start snmpd
+systemctl status snmpd
+firewall-cmd --permanent --add-port=161/udp
+firewall-cmd --reload
+firewall-cmd --query-port=161/udp (should report "yes")
+
+
+...
+...
+...
+Deliverable 2 
+
+Install SNMP Service on AD01
+Figure out how to install the SNMP Service Feature on AD01 using Server Manager on MGMT
+
+Install SNMP Tools on MGMT01
+Figure out how to install the SNMP-Tools Remote Administration Feature on MGM01
+
+Do this on All Servers Page page, click add roles and features, on features click SNMP check box and install
+
+to Enable:
+To fix event viewer error
+We will fix this by invoking a remote PowerShell session with AD01 from mgmt01.  Figure out how to do that.
+
+
+New-PSSession -ComputerName ad01-sarah
+Enter-PSSession -ComputerName ad01-sarah
+
+then do commands in screenshot
+
+
+Deliverables 3 and 4
+
+Do stuff in screenshot
