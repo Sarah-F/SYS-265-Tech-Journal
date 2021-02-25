@@ -7,9 +7,8 @@ Deliverable 3: Follow steps of video
 
 Deliverable 4: Follow steps of video
 For RDP-ing after you decrypt pass
-On Windows server 2019
-Go to instances
-Click Connect
-Select RDP Client
-Click Download Remote Desktop File
-Click/open file and click connect
+Open RDP
+Enter public IPv4 address of windows/server 2019
+CLick more options
+User = Administrator
+password from info from video
