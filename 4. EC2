@@ -2,6 +2,7 @@ Deliverable 1: Follow steps of video
 
 Deliverable 2: use the following code to download python, then follow instructions in picture
 sudo yum install python3.8
+*Make sure you also update the software on your EC2 instance with sudo yum update before
 
 Deliverable 3: Follow steps of video
 
