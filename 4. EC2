@@ -1,0 +1,15 @@
+Deliverable 1: Follow steps of video
+
+Deliverable 2: use the following code to download python, then follow instructions in picture
+sudo yum install python3.8
+
+Deliverable 3: Follow steps of video
+
+Deliverable 4: Follow steps of video
+For RDP-ing after you decrypt pass
+On Windows server 2019
+Go to instances
+Click Connect
+Select RDP Client
+Click Download Remote Desktop File
+Click/open file and click connect
