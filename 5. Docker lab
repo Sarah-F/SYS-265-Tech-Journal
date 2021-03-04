@@ -96,6 +96,10 @@ Deliverable 8 -
       $sudo ufw enable
       $netstat -tulpn
       
+      used wrong port, correct code is...
+      $sudo ufw allow 49153/tcp
+      $sudo ufw reload
+      
       https://www.ibm.com/support/knowledgecenter/STXKQY_5.0.5/com.ibm.spectrum.scale.v5r05.doc/bl1adv_firewallportopenexamples.htm 
 
 Dockerized Wordpress -Follow steps in links
