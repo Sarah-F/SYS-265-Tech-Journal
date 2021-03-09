@@ -15,3 +15,21 @@ $git config user.name Sarah-F
 $git commit -m "added a readme"
 $git push
 (enter Sarah-F in first prompt and password to github in second)
+
+Delivearble 2: Git clone
+$cat README.md
+$rm README.md
+$git checkout
+$cat README.md
+
+Git on Windows
+open internet and type git-scm.com/download/win in search bar
+download 64-bit git for windows set-up
+go through set up wizard, keep defaults
+select launch git bash then click finish
+
+Clone your repo on mgmt01
+in git repo
+$cd Desktop/
+$git clone https://github.com/Sarah-F/SYS-265-Tech-Journal
+Click sign in witg browser
