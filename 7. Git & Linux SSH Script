@@ -1,0 +1,17 @@
+Clone part:
+$git clone https://github.com/Sarah-F/SYS-265-Tech-Journal
+(enter Sarah-F in first prompt and password to github in second)
+$ls
+$cd SYS-265-Tech-Journal
+$ls
+
+Add, commit and push.
+$echo "docker01 configuration" >> README.md
+$ls
+$git add .
+$git status
+$git config user.email sfornaldes@gmail.com
+$git config user.name Sarah-F
+$git commit -m "added a readme"
+$git push
+(enter Sarah-F in first prompt and password to github in second)
