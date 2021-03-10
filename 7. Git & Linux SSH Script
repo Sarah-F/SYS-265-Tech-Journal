@@ -90,5 +90,9 @@ $cat centos7/secure-ssh.sh
 $git push
 (enter Sarah-F in first prompt and password to github in second)
 
+$git add .
+$git status
+$git commit -m "added a readme"
+$git push
 
 
