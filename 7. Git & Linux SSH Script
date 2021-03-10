@@ -92,7 +92,13 @@ $git push
 
 $git add .
 $git status
-$git commit -m "added a readme"
+$git config user.email sfornaldes@gmail.com
+$git config user.name Sarah-F
+$git commit -m "did this work"
+$git config --global push.default matching
+$git config --global push.default simple
 $git push
 
+$git pull
+$git push
 
