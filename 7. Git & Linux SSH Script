@@ -5,6 +5,7 @@ $ls
 $cd SYS-265-Tech-Journal
 $ls
 
+
 Add, commit and push.
 $echo "docker01 configuration" >> README.md
 $ls
@@ -16,17 +17,20 @@ $git commit -m "added a readme"
 $git push
 (enter Sarah-F in first prompt and password to github in second)
 
+
 Delivearble 2: Git clone
 $cat README.md
 $rm README.md
 $git checkout
 $cat README.md
 
+
 Git on Windows
 open internet and type git-scm.com/download/win in search bar
 download 64-bit git for windows set-up
 go through set up wizard, keep defaults
 select launch git bash then click finish
+
 
 Clone your repo on mgmt01
 in git repo
@@ -47,6 +51,7 @@ $git status
 $git commit -m "added a readme"
 $git push
 
+
 Deliverable 4:
 $echo mgmt01-sarah >> README.md
 $cat README.md
@@ -56,11 +61,13 @@ $git status
 $git commit -m "oops"
 $git push
 
+
 Deliverable 5: Git pull
 Go back to PuTTY tab
 $git status
 $git pull
 (enter Sarah-F in first prompt and password to github in second)
+
 
 Part 2: Hardening SSH
 PuTTY into web01
@@ -102,3 +109,16 @@ $git push
 $git pull
 $git push
 
+
+RSA keypair
+$cd ..
+$ls
+$cd public-keys
+$ssh-keygen -t rsa -C "sys265"
+$cp ~/.ssh/id_rsa.pub .
+(Press enter for all prompts)
+$git add .
+$git status
+$git commit -m "made key pair"
+$git pull
+$git push
