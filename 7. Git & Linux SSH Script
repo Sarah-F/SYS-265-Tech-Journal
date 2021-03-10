@@ -56,3 +56,43 @@ $git status
 $git commit -m "oops"
 $git push
 
+Deliverable 5: Git pull
+Go back to PuTTY tab
+$git status
+$git pull
+(enter Sarah-F in first prompt and password to github in second)
+
+Part 2: Hardening SSH
+PuTTY into web01
+$sudo yum install git
+$git clone https://github.com/Sarah-F/SYS-265-Tech-Journal
+(enter Sarah-F in first prompt and password to github in second)
+$cd SYS-265-Tech-Journal/SYS265
+$pwd
+$mkdir -p linux/{public-keys,centos7}
+$cd linux/
+$ls
+$nano centos7/secure-ssh.sh 
+  #secure-ssh.sh
+  #author Sarah-F
+  #creates a new ssh user using $1 parameter
+  #adds a public key from the local repo or curled from the remote repo
+  #removes roots ability to ssh in
+  echo "ALL YOUR CODE GOES HERE"
+$chmod +x centos7/secure-ssh.sh
+error message
+$cd centos7
+$touch secure-ssh.sh (touch creates the file)
+$ls
+$chmod +x secure-ssh.sh
+$cd ..
+$cat centos7/secure-ssh.sh
+$git push
+(enter Sarah-F in first prompt and password to github in second)
+
+$git add .
+$git status
+$git commit -m "added a readme"
+$git push
+
+
