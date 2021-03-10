@@ -50,8 +50,9 @@ $git push
 Deliverable 4:
 $echo mgmt01-sarah >> README.md
 $cat README.md
+$nano README.me (delete hostname)
 $git add .
 $git status
-$git commit -m "edited readme"
+$git commit -m "oops"
 $git push
 
