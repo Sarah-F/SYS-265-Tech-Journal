@@ -32,4 +32,26 @@ Clone your repo on mgmt01
 in git repo
 $cd Desktop/
 $git clone https://github.com/Sarah-F/SYS-265-Tech-Journal
-Click sign in witg browser
+Click sign in with browser - select chrome
+$cd SYS-265-Tech-Journal
+$mkdir SYS265
+$cd SYS265
+$mkdir mgmt01
+$cd mgmt01
+$hostname
+Deliverable 3:
+$echo hostname >> README.md
+$cat README.md
+$git add .
+$git status
+$git commit -m "edited readme"
+$git push
+
+Deliverable 4:
+$echo mgmt01-sarah >> README.md
+$cat README.md
+$git add .
+$git status
+$git commit -m "edited readme"
+$git push
+
