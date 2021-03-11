@@ -122,3 +122,11 @@ $git status
 $git commit -m "made key pair"
 $git pull
 $git push
+
+Hardening Script
+Go to docker01 PuTTy
+$git pull
+
+Create user
+$nano rsa_user.bash
+  #!/bin/bash
