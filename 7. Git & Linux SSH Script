@@ -114,7 +114,7 @@ RSA keypair
 $cd ..
 $ls
 $cd public-keys
-$ssh-keygen -t rsa -C "sys265"
+$ssh-keygen -t rsa -C "sys265-2" (-2 only bcuz of previous user error, remove when redoing)
 $cp ~/.ssh/id_rsa.pub .
 (Press enter for all prompts)
 $git add .
@@ -130,11 +130,15 @@ $git pull
 Create user
 $nano rsa_user.bash
   #!/bin/bash
-  useradd -m -d /home/sys265 -s /bin/bash sys265
-  mkdir /home/sys265/.ssh
-  cp SYS265/linux/public-keys/id_rsa.pub /home/sys265/.ssh/authorized_keys
-  chmod 700 /home/sys265/.ssh
-  chmod 600 /home/sys265/.ssh/authorized_keys
-  chown -R sys265:sys265 /home/sys265/.ssh
-sudo bash rsa_user.bash
-  
+  useradd -m -d /home/sys265-2 -s /bin/bash sys265-2
+  mkdir /home/sys265-2/.ssh
+  cp SYS265/linux/public-keys/id_rsa.pub /home/sys265-2/.ssh/authorized_keys
+  chmod 700 /home/sys265-2/.ssh
+  chmod 600 /home/sys265-2/.ssh/authorized_keys
+  chown -R sys265-2:sys265-2 /home/sys265-2/.ssh
+$sudo bash rsa_user.bash
+
+Deliverable 8.  Provide a screenshot, showing the passwordless login.
+on web01 putty
+$exit
+$ssh sys265-2@docker01-sarah
