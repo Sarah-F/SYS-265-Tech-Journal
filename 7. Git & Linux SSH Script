@@ -142,3 +142,35 @@ Deliverable 8.  Provide a screenshot, showing the passwordless login.
 on web01 putty
 $exit
 $ssh sys265-2@docker01-sarah
+
+Modify your secure-ssh.sh script to do the following:
+Using a passed parameter for username such as ./secure-ssh.sh testuser12, create a passwordless user such that the user with the associated private key on web01 can login without password as shown in the following example:
+Root should not be able to login (see the "PermitRootLogin setting in sshd_conf).  Note, docker01 is Ubuntu and this is already the case. For this lab, you get a pass on this.  Were this a CentOS server, you would need to fix that.
+on web01
+$exit (so back to web01,then cd to linux)
+$cd SYS-265-Tech-Journal
+$ls
+$cd SYS265
+$ls
+$cd linux
+$ls
+$cd centos7
+$nano secure-ssh.sh 
+add under text thats already there
+    echo -e "enter username"
+    read user
+    sudo useradd $user
+    echo $user was created
+    sudo mkdir /home/$user/.ssh
+    sudo cp /home/sarah/SYS-265-Tech-Journal/SYS265/linux/public-keys/id_rsa.pub /home/$user/.ssh/authorized_keys (to find pathway for this exit nano and use pwd command)
+    sudo chmod 700 /home/$user/.ssh
+    sudo chmod 600 /home/$user/.ssh/authorized_keys
+    sudo chown -R $user:user /home/$user/.ssh
+    sudo printf' \n%s\n' 'PermitRootLogin no' >> /etc/ssh/sshd_config (printf is a command used to display a given string, it can also be used to look for certain things and replace them)
+    sudo systemctl restart sshd
+    echo permit root login disabled
+%./secure-ssh.sh (./ comand to run script)
+$git pull
+$git push
+$cat secure-ssh.sh
+
