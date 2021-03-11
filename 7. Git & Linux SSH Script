@@ -44,7 +44,7 @@ $echo hostname >> README.md
 $cat README.md
 $git add .
 $git status
-$git commit -m "edited readme"
+$git commit -m "added a readme"
 $git push
 
 Deliverable 4:
