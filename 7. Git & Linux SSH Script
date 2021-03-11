@@ -170,6 +170,9 @@ add under text thats already there
     sudo systemctl restart sshd
     echo permit root login disabled
 %./secure-ssh.sh (./ comand to run script)
+$git add .
+$git status
+$git commit -m "made key pair"
 $git pull
 $git push
 $cat secure-ssh.sh
