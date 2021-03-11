@@ -175,5 +175,18 @@ $git status
 $git commit -m "made key pair"
 $git pull
 $git push
+$sudo bash rsa_user.bash
+
+go to docker on putty
+$cd SYS-265-Tech-Journal
+$ls
+$cd SYS265
+$ls
+$cd linux
+$ls
+$cd centos7
 $cat secure-ssh.sh
+$./secure-ssh.sh (./ comand to run script)
+  $sys265-2
+
 
