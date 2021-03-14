@@ -23,7 +23,7 @@ Go to IPv4 protocols page and
     Subnet mask: 255.255.255.0
     Default Gateway: 10.0.5.2
   Select use the following DNS server addresses
-    Preferred DNS server: 10.0.5.2
+    Preferred DNS server: 10.0.5.5
 
 COnfigure PFSense
 Go to Chrome and type in 10.0.5.2
@@ -52,7 +52,7 @@ tyoe sconfig
   IP:  10.0.5.5
 	Netmask: 255.255.255.0
 	Gateway: 10.0.5.2
-	Preferred DNS: 10.0.5.2
+	Preferred DNS: 10.0.5.5
   Computer Name:  ad01-yourname
   Manual Windows Update
   
