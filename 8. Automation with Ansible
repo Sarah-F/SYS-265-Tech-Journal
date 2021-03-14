@@ -1,0 +1,9 @@
+Power down web01, nmon01, and docker01
+
+Set ansible1, ansible2, and controller to LAN-sarah.fornaldes instead of WAN
+
+Set up IP addresses:
+controller 10.0.5.90
+ansible1 10.0.5.91
+ansible2 10.0.5.92 * 
+**  CentOS uses NetworkManager as a service, not network or networking.
