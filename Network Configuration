@@ -1,1 +1,4 @@
-
+IP Address: 10.0.5.x
+Subnet mask: 255.255.255.0
+Default Gateway: 10.0.5.2
+Preferred DNS server: 10.0.5.5
