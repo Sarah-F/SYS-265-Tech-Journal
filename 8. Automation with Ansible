@@ -109,3 +109,21 @@ Do the same on deployer@ansible1-sarah(use tabs)
 Do the same on deployer@ansible2-sarah(use tabs)
 
 As the deployer user on controller, create an RSA keypair with a passphrase protected private key and using ssh-copy-id, add deployer@controller's public key to the deployer accounts on ansible1 and ansible2.
+$ssh-keygen -t rsa -C "sys265"
+$cp ~/.ssh/id_rsa.pub deployer@ansible1
+$cp ~/.ssh/id_rsa.pub deployer@ansible2
+$eval $(ssh-agent)
+$ssh-add -t 14400
+$ssh deployer@ansible2-sarah
+$exit
+
+Deliverable 4.  Demonstrate passwordless ssh with rsa authentication to both ansible1 and ansible2 from controller.  Provide a screenshot similar to the one below that shows passwordless authentication and then passwordless elevation to root on each system.
+PuTTy on to deployer@controller-sarah
+$ssh ansible1-sarah
+$sudo -i
+$exit
+$exit
+$ssh ansible1-sarah
+$sudo -i
+$exit
+$exit
