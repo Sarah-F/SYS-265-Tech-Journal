@@ -110,8 +110,8 @@ Do the same on deployer@ansible2-sarah(use tabs)
 
 As the deployer user on controller, create an RSA keypair with a passphrase protected private key and using ssh-copy-id, add deployer@controller's public key to the deployer accounts on ansible1 and ansible2.
 $ssh-keygen -t rsa -C "sys265"
-$cp ~/.ssh/id_rsa.pub deployer@ansible1
-$cp ~/.ssh/id_rsa.pub deployer@ansible2
+$ssh-copy-id -i ~/.ssh/id_rsa.pub deployer@ansible1-sarah
+$ssh-copy-id -i ~/.ssh/id_rsa.pub deployer@ansible2-sarah
 $eval $(ssh-agent)
 $ssh-add -t 14400
 $ssh deployer@ansible2-sarah
@@ -127,3 +127,27 @@ $ssh ansible1-sarah
 $sudo -i
 $exit
 $exit
+
+First run
+Setup the following directory hierarchy and inventory file on controller-yourname.  The assumption is that ansible1-yourname and ansible2-yourname resolve via DNS.  Run the first ansible ping.  
+$pwd
+$mkdir -p ansible/roles
+$cd ansible/
+$echo ansible1-sarah >> inventory.txt
+$echo ansible2-sarah >> inventory.txt
+$cat inventory.txt
+$ansible all -m ping -i inventory.txt
+
+Try a few ad-hoc operating system commands similar to the use of id below.
+$ansible all -a id -i inventory.txt
+
+Deliverable 5.  Provide a screenshot of one of your executed commands (not id)
+$nano inventory.txt
+type [webmin] between the lines that say ansible1 and ansible2
+
+webmin playbook installation
+$ansible-galaxy install semuadmin.webmin -p roles/
+$ls roles/
+
+Configure the inventory so that ansible2 is in the webmin group.  Create a playbook called webmin.yml within the roles directory that has the displayed content.  Don't use tabs, use two spaces for indentation.
+$nano roles/webmin.yml
