@@ -2,8 +2,110 @@ Power down web01, nmon01, and docker01
 
 Set ansible1, ansible2, and controller to LAN-sarah.fornaldes instead of WAN
 
-Set up IP addresses:
-controller 10.0.5.90
-ansible1 10.0.5.91
-ansible2 10.0.5.92 * 
-**  CentOS uses NetworkManager as a service, not network or networking.
+Set up IP addresses using nmtui:
+$nmtui
+Select Edit a connection
+Select ens192
+Go to IPv4 configuartion and select manual
+Use the right arrow and click show
+Enter the following info
+    IP Address: 10.0.5.x/24
+    Subnet mask: 255.255.255.0
+    Default Gateway: 10.0.5.2
+    DNS server: 10.0.5.5
+    Search Domains: sarah.local
+
+    ansible1 10.0.5.91
+    ansible2 10.0.5.92
+    controller 10.0.5.90
+Press Ok
+Select Set a system hostname and type name of vm (ansible1-sarah, ansible2-sarah)
+Press Quit
+
+For controller-sarah.fornaldes you need to do the following 
+How to configure IP address in ubuntu
+      cd /etc/netplan
+      sudo nano 01-netcfg.yaml
+         network:
+          version: 2
+          renderer: networkd
+          ethernets:
+            ens160:
+              dhcp4: no
+              addresses: [10.0.5.90/24]
+              gateway4: 10.0.5.2
+              nameservers:
+                  search: [sarah.local]
+                  addresses: [10.0.5.5]
+      (use space, not tab, exit and save)
+      Once done save and close the file and apply the changes with:
+      $sudo netplan apply
+
+      Verify the changes by typing:
+      $ip addr
+      https://linuxize.com/post/how-to-configure-static-ip-address-on-ubuntu-18-04/ 
+
+How to change hostname
+    1. Change the hostname using hostnamectl. #
+      $sudo hostnamectl set-hostname controller-sarah
+    2. Edit the /etc/hosts file.
+      $sudo nano /etc/hosts
+        change line 2 from ubuntu to controller-sarah  
+    3. Edit the cloud.cfg file. #
+      To check if the package is installed run the following ls command :
+      $ls -l /etc/cloud/cloud.cfg
+      $sudo vim /etc/cloud/cloud.cfg
+        Search for preserve_hostname and change the value from false to true, Save the file and close your editor.
+      To Verify the change #
+      $hostname
+      https://linuxize.com/post/how-to-change-hostname-on-ubuntu-18-04/
+
+Linux Accounts
+Create the following Linux accounts:
+On controller, create a named sudo user (your name), another sudo user named deployer
+    How to add a privilaged user and add group
+      $id
+      $sudo adduser sarah
+      $sudo usermod -aG sudo sarah
+      $sudo adduser deployer
+      $sudo usermod -aG sudo deployer
+      
+      On ansible1 and ansible2, create a sudo user named deployer.  All deployer passwords should be the same
+      $sudo adduser deployer
+      $sudo passwd deployer
+      $sudo usermod -aG wheel deployer
+
+
+DNS: Add a DNS record for your three new systems.
+  Open ServerManager
+  Go to DNS tab
+  Right click on AD01-sarah
+  Select DNS Manager
+  Add A and PTR records for ansible1-sarah, ansible2-sarah, controller-sarah
+
+Deliverable 1.  A screenshot similar to the one below showing an SSH session from mgmt01 to controller and within that session a DNS lookup for controller against ad01, pinging ansible1,ansible2 and champlain.edu
+Use PuTTy to log into controller-sarah
+$nslookup controller-sarah ad01-sarah
+$ping -c1 ansible1-sarah
+$ping -c1 ansible2-sarah
+$ping -c1 champlain.edu
+
+Deliverable 2.
+In same putty 
+$sudo su -deployer
+$sudo -i
+
+Installing Ansuble
+$sudo apt install ansible sshpass python3-paramiko
+
+Deliverable 3.  Provide a screenshot similar to the one below, indicating a successful ansible installation:
+$ansible --version
+
+Create /etc/sudoers.d/sys265 on all Linux systems.
+PuTTy on to deployer@controller-sarah(use tabs)
+$sudo nano /etc/sudoers.d/sys265
+    deployer  ALL=(ALL)  NOPASSWD: ALL
+Do the same on deployer@ansible1-sarah(use tabs)
+Do the same on deployer@ansible2-sarah(use tabs)
+
+As the deployer user on controller, create an RSA keypair with a passphrase protected private key and using ssh-copy-id, add deployer@controller's public key to the deployer accounts on ansible1 and ansible2.
