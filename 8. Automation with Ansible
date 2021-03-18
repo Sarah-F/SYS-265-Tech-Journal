@@ -173,11 +173,12 @@ $cat roles/webmin.yml
 Execute the playbook (may take a moment):
 $ansible-playbook -i inventory.txt roles/wembin.yml
 
-Login to webmin as root@ansible2
 PuTTY to deployer@ansible2
 $sudo firewall-cmd --permanent --add-port=10000/tcp
 $sudo firewall-cmd --reload
 $sudo firewall-cmd --query-port=10000/tcp
+
+Login to webmin as root@ansible2
 Open browser and type the following line into the url bar
 https://ansible2-sarah.sarah.local:10000
 
@@ -191,7 +192,7 @@ galaxy.ansible.com
 
 Deliverable 7:  Deploy a different role to ansible1.  Provide a screenshot of your successful playbook execution
 $nano inventory.txt
-type [datadog] under ansible2
+type [datadog] above ansible1
 $cat inventory.txt
 $ansible-galaxy install datadog.datadog -p roles/
 $nano roles/datadog.yml
@@ -208,14 +209,92 @@ $nano roles/datadog.yml
         tasks:
           - name: add firewall rule
             firewalld:
-              port: 10000/tcp
+              port: 5002/tcp
               permanent: true
               state: enabled
 
 $cat roles/datadog.yml
 $ansible-playbook -i inventory.txt roles/datadog.yml
 
+PuTTY to deployer@ansible1
+$sudo firewall-cmd --permanent --add-port=5002/tcp
+$sudo firewall-cmd --reload
+$sudo firewall-cmd --query-port=5002/tcp
+
 Open browser and type the following line into the url bar
 https://ansible1-sarah.sarah.local
+Couldn't access internet cite
+
+Windows Automation
+Preparing MGMT01 for Ansible
+Make sure OpenSSH is running on mgmt01
+    Select Tools in top right corner 
+    Computer Managment
+    Services and Applications
+    Look for OpenSSH SSH Server, scrool to right make sure its running
+
+Set Powershell to be the Default Shell for SSH
+If you get a normal command prompt when logging in over SSH, Run the following 2 commands to change the ssh shell to powershell (Do not hand type this)
+    Putty into deployer@controller-sarah
+    $ssh sarah.fornaldes-adm@sarah.local@mgmt01-sarah
+    if ssh takes you to a powershell you do not need to enter the following commands, make sure to check the bar on the top bcuz the powershell will be black
+    Open command prompt
+    $Set-ItemProperty "HKLM:\Software\Microsoft\Powershell\1\ShellIds" -Name ConsolePrompting -Value $true
+    $New-ItemProperty -Path HKLM:\SOFTWARE\OpenSSH -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+
+Update your inventory file to add a new group called windows with mgmt01-yourname as the host in that group.  Also include the variables associated with that group [windows:vars].
+$exit (you want to be back to deployer@controller-sarah: ~/ansible$)
+$nano inventory.txt
+at the bottom type 
+    [windows]
+    mgmt01-sarah
+    [windows:vars]
+    ansible_shell_type=powershell
+
+Deliverable 10.  Provide a screenshot similar to the one below that shows a successful win_ping from controller to mgmt01.
+$ansible windows -i inventory.txt -m win_ping -u sarah.fornaldes-adm@sarah.local --ask-pass
+
+Add wks1 to your inventory under the windows category and rerun the win_ping.  You will likely get the following common error.
+$nano inventory.txt
+type wks01-sarah beneath mgmt01-sarah (between mgmt01-sarah and [windows:vars]
+
+You can fix this in one of two ways.  The first would be to ssh into wks1 first and accept the key. The second would be to ignore unknown hosts and you would do so by adding the following file to the directory in which you are running your ansible commands.
+$pwd
+$nano ansible.cfg
+    [defaults]
+    host_key_checking = false
+$cat ansible.cfg
+
+Deliverable 11.  Rerun the playbook with successful pings on wks1 and mgmt1 similar to the one below
+$ansible windows -i inventory.txt -m win_ping -u sarah.fornaldes-adm@sarah.local --ask-pass
+wks cant connect
+
+Construct a new playbook within the roles directory called windows_software.yml.  This is a simple playbook that uses built-in ansible functionality as opposed to a downloaded role.  The list of tasks below will use a module called win_chocolatey which is a package manager for Windows similar to apt-get or yum that is becoming more popular in enterprises.
+Deliverable 12.  Provide a screenshot showing the successful playbook run and software Installation
+
+$nano inventory.txt
+type [windows_software] above mgmt01-sarah
+
+type the following at the bottom
+    ansible_user=sarah.fornaldes-adm@sarah.local
+    ansible_connection=winrm
+    ansible_winrm_server_cert_validation=ignore
+    ansible_winrm_transportation=nylm
+    ansible_winrm_port=5986
+$cat inventory.txt
 
 
+$nano roles/windows_software.yml
+    ---
+    - name: install windows applications
+      hosts: windows
+      tasks:
+        - name: Install Firefox and 7zip
+        win_chocolatey:
+          name:
+          - firefox
+          - 7zip
+          state: present
+$cat roles/windows_software.yml
+Installation
+$ansible-playbook -i inventory.txt roles/windows_software.yml - u sarah.fornaldes-adm@sarah.local --ask-pass
