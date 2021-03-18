@@ -151,3 +151,71 @@ $ls roles/
 
 Configure the inventory so that ansible2 is in the webmin group.  Create a playbook called webmin.yml within the roles directory that has the displayed content.  Don't use tabs, use two spaces for indentation.
 $nano roles/webmin.yml
+---
+- name: webmin SYS265
+  hosts: webmin
+  become: true
+  vars:
+    install_utilities: false
+    firewalld_enable: true
+  roles:
+  - semuadmin.webmin
+ 
+  tasks:
+  - name: add firewall rule
+    firewalld:
+      port: 10000/tcp
+      permanent: true
+      state: enabled
+
+$cat roles/webmin.yml
+
+Execute the playbook (may take a moment):
+$ansible-playbook -i inventory.txt roles/wembin.yml
+
+Login to webmin as root@ansible2
+PuTTY to deployer@ansible2
+$sudo firewall-cmd --permanent --add-port=10000/tcp
+$sudo firewall-cmd --reload
+$sudo firewall-cmd --query-port=10000/tcp
+Open browser and type the following line into the url bar
+https://ansible2-sarah.sarah.local:10000
+
+Deliverable 6.  Provide a screenshot that shows some aspect of Webmin's logged-in interface like the one shown below:
+Take similiar screenshot
+
+Ansible Galaxy
+Head over to galaxy.ansible.com and spend some time looking for roles that are built for CentOS, Redhat or EL version 7.
+Take similiar screenshot
+galaxy.ansible.com
+
+Deliverable 7:  Deploy a different role to ansible1.  Provide a screenshot of your successful playbook execution
+$nano inventory.txt
+type [datadog] under ansible2
+$cat inventory.txt
+$ansible-galaxy install datadog.datadog -p roles/
+$nano roles/datadog.yml
+    ---
+      - hosts: datadog
+        remote_user: deployer
+        become: yes
+        roles:
+          - roles: datadog.datadog
+        vars:
+          install_utilities: true
+          firewall_enable: true
+          
+        tasks:
+          - name: add firewall rule
+            firewalld:
+              port: 10000/tcp
+              permanent: true
+              state: enabled
+
+$cat roles/datadog.yml
+$ansible-playbook -i inventory.txt roles/datadog.yml
+
+Open browser and type the following line into the url bar
+https://ansible1-sarah.sarah.local
+
+
