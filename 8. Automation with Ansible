@@ -267,23 +267,47 @@ $cat ansible.cfg
 
 Deliverable 11.  Rerun the playbook with successful pings on wks1 and mgmt1 similar to the one below
 $ansible windows -i inventory.txt -m win_ping -u sarah.fornaldes-adm@sarah.local --ask-pass
-wks cant connect
+    wks cant connect, prob with ssh
+    Open wks01-sarah
+    Type services in search bar
+    Scroll to and make sure OpenSSH is running on mgmt01
+    Select Tools in top right corner 
+    Computer Managment
+    Services and Applications
+    Look for OpenSSH SSH Server, right click and select restart
+    
+    Open wks01-sarah
+    Open powershell run as administrator
+    $Get-WindowsCapability -Online | ? Name -like 'OpenSSH*'
+    $get-service sshd
+    $Get-NetFirewallRule -Name *ssh*
+    
+    I can ssh out of wks01 but not into it
+    
+    Go back to services on wks01
+    Look for OpenSSH Authentification Agent, right click and select properties, Go to start up type and select manual and run 
+    
+    uset netstat to look at network
+    
+    Firewall
+    Advanced settigns
+    Inbound Rules
+    OpenSSH SSH Server, right clicked properties, checked out protocols and ports
+
+    Go to mgmt, putty to deployer@controller-sarah
+    $cd /etc/ssh
+    $ls
+    $sudo cat /.ssh/known_hosts
+    that didn;t work
+    
+    Tried turning wks01 firewall off and on 
+
+    Tried this command
+    $ssh-copy-id -i ~/.ssh/id_rsa.pub sarah.fornaldes-adm@wks01-sarah
+
 
 Construct a new playbook within the roles directory called windows_software.yml.  This is a simple playbook that uses built-in ansible functionality as opposed to a downloaded role.  The list of tasks below will use a module called win_chocolatey which is a package manager for Windows similar to apt-get or yum that is becoming more popular in enterprises.
 Deliverable 12.  Provide a screenshot showing the successful playbook run and software Installation
-
-$nano inventory.txt
-type [windows_software] above mgmt01-sarah
-
-type the following at the bottom
-    ansible_user=sarah.fornaldes-adm@sarah.local
-    ansible_connection=winrm
-    ansible_winrm_server_cert_validation=ignore
-    ansible_winrm_transportation=nylm
-    ansible_winrm_port=5986
-$cat inventory.txt
-
-
 $nano roles/windows_software.yml
     ---
     - name: install windows applications
@@ -298,3 +322,21 @@ $nano roles/windows_software.yml
 $cat roles/windows_software.yml
 Installation
 $ansible-playbook -i inventory.txt roles/windows_software.yml - u sarah.fornaldes-adm@sarah.local --ask-pass
+
+Deliverable 13.  Provide a screenshot from an ssh session to mgmt01 that displays installed packages similar to the one below, notepad++ should be there.
+ssh into mgmt01 from 
+$nano roles/windows_software.yml
+type "-Notepadplusplus" into yaml between -firefox and -7zip
+    ---
+    - name: install windows applications
+      hosts: windows
+      tasks:
+        - name: Install Firefox and 7zip
+        win_chocolatey:
+          name:
+          - firefox
+          - 7zip
+          -Notepadplusplus
+          state: present
+ssh sarah.fornaldes-adm@mgmt01-sarah
+$C:\ProgramData\chocolatey\bin\choco.exe list --local-only Chocolatey v0.10.15
