@@ -80,3 +80,13 @@ $exit
 $id
 take screenshot
 Provide a screenshot similar to the one below that shows the login banner and the terminal id command followed by a successful sudo -i.
+
+
+Deliverable 5.  Figure out how to add the Dashboard feature and allow your Ansible2 to manage Ansible1.  Provide a screenshot similar to the one below (1 point):  For a challenge you can try adding Controller to the dashboard (yes, this works too!)
+Open ansible1 and log onto deployer
+$sudo yum install cockpit cockpit-dashboard
+Go back to wks01-sarah and log into deployer, go to terminal...
+$sudo yum install cockpit-dashboard
+Re-login
+Click Dshboard on the far left
+Scroll to Server and click the plus sigh on the right, Enter anisble1 ip address (10.0.5.91)
