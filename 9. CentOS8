@@ -1,0 +1,82 @@
+Initial Network Configuration
+Ansible2 should already be set with its IP, hostname, usually named account with admin access, and validated its access. 
+Disable remote root ssh access, and validate it does not have remote root access.
+
+$cd /etc/ssh
+$sudo nano sshd_config
+look for PermitRootLogin yes and change yes to no, exit nano
+$service sshd restart
+
+Deliverable 1 (2 points): Provide all necessary screenshots validating the usual OS settings listed above.
+-failed root ssh login and log showing nature of login failure
+-successful named login via ssh (from wks1 or mgmt01) and elevation to root 
+
+Log onto mgmt and use PUTTY to ssh into ansible2 using the root login (root,champ20)
+
+Then go back to ansible2 and log into the root user
+$cat /var/log/secure
+
+Go back onto mgmt and use PUTTY to ssh into ansible2 using the deployer login and take screenshot
+
+
+
+
+
+
+Changing IP Address using nmcli 
+
+Let’s explore a command nmcli. It’s not new to CentOS v8, but it’s likely new to you. 
+After parsing through it’s man page, change your Ansible2 host’s IP to 10.0.5.234 using the nmcli syntax. 
+Restart the network service using Network Manager. (Don't forget to update your DNS records!)
+Then go back to ansible2 and log into the deployer
+$nmcli d (run this command to see whats connections)
+$nmcli con mod ens192 ip4 10.0.5.234/24
+$nmcli con up ens192(to save)
+$ip addr
+Get screenshot of this
+
+Go back onto mgmt
+DNS: Add a DNS record for your three new systems.
+  Open ServerManager
+  Go to DNS tab
+  Right click on AD01-sarah
+  Select DNS Manager
+  Edit A and PTR records for ansible2-sarah
+Deliverable 2 (2 points): Provide necessary screenshots validating the successful CLI syntax modifying the IP, applying the changes to the network service, and then validating network connectivity. Make sure you document this as well in your tech journal.
+
+
+Cockpit, a new shiny toy
+Ok, let’s explore that new feature from above. This item now comes as part of CentOS 8, and is meant for Linux server management via a web interface. After some sleuthing and testing, you will set up and explore this feature to validate its functionality. 
+On ansible2, on deployer
+$systemctl enable --now cockpit.socket
+
+Go to wks01 and open chrome
+Type the following into the search bar
+10.0.5.234:9090/system/terminal
+
+type the following into the command prompt that shows up
+$whoami
+$hostname
+$nslookup cockpit-project.org
+$ip a
+take a screenshot
+
+
+
+Deliverable 4.  Figure out how to:
+Join your Ansible2 system to the yourname.local Active Directory domain (1 point). Explore the cockpit interface before installing a bunch of packages.
+$realm join sarah.local -U sarah.fornaldes-adm
+$sudo realm list
+  (Other option, go to overviwew, scroll to the config tab and click Domain)
+How to add the Windows Domain Admins group to the sudoers on cockpit (1 point).
+$sudo visudo
+  scroll to bottom
+  %domain\ admins@sarah.local ALL=(ALL) ALL
+
+CLick deployer in top left corner and click log out
+Log in with sarah.fornaldes-adm@sarah.local user
+$sudo -i
+$exit
+$id
+take screenshot
+Provide a screenshot similar to the one below that shows the login banner and the terminal id command followed by a successful sudo -i.
