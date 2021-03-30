@@ -1,0 +1,248 @@
+Prerequisites
+There are two new Server Core 2019 VMs in your environment. They need to be properly networked, joined to your domain, and viewable via MGMT01.  You may pick your own open LAN based IP addresses for these systems.
+On DFS1 and DFS2 click edit and change Network Adapter 1 from WAN to LAN
+Open DFS1 box
+change password
+type sconfig
+type 1
+  type d (for domain)
+    Domain Name: sarah.local
+    Specify an authorized domain/user: sarah.fornaldes-adm
+    Click No
+    Click Yes
+type 2
+    Computer Name: dfS1-yourname
+type 8
+type 1
+  type 1
+    type s (for static)
+    IP:  10.0.5.16
+    Sybnet mask: 255.255.255.0
+    Gateway: 10.0.5.2
+  type 2
+    Preferred DNS: 10.0.5.5
+
+Open DFS2 box
+change password
+type sconfig
+type 1
+  type d (for domain)
+    Domain Name: sarah.local
+    Specify an authorized domain/user: sarah.fornaldes-adm
+    Click No
+    Click Yes
+type 2
+    Computer Name: dfS2-yourname
+type 8
+type 1
+  type 1
+    type s (for static)
+    IP:  10.0.5.17
+    Sybnet mask: 255.255.255.0
+    Gateway: 10.0.5.2
+  type 2
+    Preferred DNS: 10.0.5.5
+
+Open MGMT01 box
+Right click All Servers tab
+  Select add server
+  Type dfS1 and dfS2 in search box
+  Click find now
+  Select dfS1 and dfS2
+  Click the right arrow between the boxes
+  Click on dfS1 and dfS2
+  Click ok
+Go to DNS tab
+  Right click on AD01-sarah
+  Select DNS Manager
+  Edit A and PTR records for DFS1 and DFS2
+  
+Create 2 shared folders
+Via Computer Management on DFS1, create a new Share named ‘dfs1’ with a folder path of C:\dfs1 which allows Admins full access & others read-only access.
+Right click on DFS1-sarah, select Computer Management
+              Error message tells you something about firewall rules
+              Open Windows Defender Firewall and disable firewall
+                Go to Advanced Settings 
+                  Select Inbound Rules and look for COM+ Network access and right click enable rule, and enable all 3 Remote Event Logs
+              GO back to Sever Manager
+                Click Tools
+                select Group Polict Management
+                Click Forest
+                Click Domains
+                Click sarah.,local
+                Right Default Domain Policy, select Edit
+                Click Conmputer Configuartion
+                Click Policies
+                Click Administrative Templates
+                Clcik Network
+                Click Network Connections
+                Click Windows Defender Firewall
+                Click Domain Profile
+                  Right Click Windows Defender Firewall: Allow inbound remote administration
+                  Click Edit
+                  Click Enabled
+                  Click Apply
+                  Click ok
+                Exit out of this, go to command prompt, run as admin, 
+                $gpudate /force
+
+                Computer Managment didn't work
+                tried pinging dfs1-sarah, and tried pinging 10.0.5.16, ping didn't work, it says request timed out
+  
+  Tried logging into adm account on dfs1 and dfs2
+  $netsh advfirewall firewall set rule group="Windows Management Instrumentation (WMI)" new enable=yes
+  $netsh advfirewall firewall set rule group="Remote Event Log Management" new enable=yes
+  (this worked)
+  
+  Go back to mgmt01, Go to All Servers, Right click on DFS1-sarah, select Computer Management
+  Click Shared folders, 
+  Click Shares
+  Right click on shares, select New Share
+      Create a Shared Folder Wizard
+        Intro Page: Next
+        Folder Path: C:\dfs1, next
+        Name, Description, and Settings: next
+        Shared Folder Permissions, next
+        Finish pageL click finish
+       Right click the new share made (C;\dfs1)
+       Click Properties
+       click Share Permissions
+       Click Add
+       Type in Domain Admins
+       give them Full Controll Permissions
+       Click appy, click ok
+  Repeat for dfs2
+  Right click on DFS1-sarah, select Computer Management
+  Click Shared folders, 
+  Click Shares
+  Right click on shares, select New Share
+      Create a Shared Folder Wizard
+        Intro Page: Next
+        Folder Path: C:\dfs2, next
+        Name, Description, and Settings: next
+        Shared Folder Permissions, next
+        Finish pageL click finish   
+      Right click the new share made (C;\dfs1)
+     Click Properties
+     click Share Permissions
+     Click Add
+     Type in Domain Admins
+     give them Full Controll Permissions
+     Click appy, click ok
+  
+On WKS01 under your named admin account, you should be able to access the two new shares. Create a file in each similar to that shown below.
+Go to wks01 and log onto sarah.fornaldes-adm account
+Open Powershell
+$dir \\dfs1-sarah\dfs1\
+$echo "test" > \\dfs1-sarah\dfs1\dsf1.txt
+$dir \\dfs2-sarah\dfs2\
+$echo "test" > \\dfs2-sarah\dfs2\dsf2.txt
+$cat \\dfs1-sarah\dfs1\dsf1.txt
+$cat \\dfs2-sarah\dfs2\dsf2.txt
+$hostname
+$pwd
+$whoami
+
+Install DFS
+Install DFS Management Tools feature as a Remote Server Admin tool for file services on MGMT01. 
+Add the two server roles DFS Namespace and DFS Replication for file and storage services on MGMT01. 
+Add DFS Replication server role to both DFS1 and DFS2. Open the DFS Management Console under file & storage services on MGMT01.
+
+Install DFS Management Tools feature as a Remote Server Admin tool for file services on MGMT01. 
+ON mgmgt01
+Go to All Servers
+Right Click on MGMT01-SARAH
+Select Add Roles and Features
+  Add ROles anf Features Wizard
+    Before you Begin Page: next
+    Installation Type: next
+    Server Selection: next
+    Server Roles: next
+    Features: Scroll to Remote Server addmin tools and click on arrow, 
+              click on Role Administration Tools Arrow, 
+              click on File Services tool Arrow, 
+              check DFS Management Tools box
+              click next
+    Confirmation: install
+
+Add the two server roles DFS Namespace and DFS Replication for file and storage services on MGMT01. 
+Right Click on MGMT01-SARAH
+Select Add Roles and Features
+  Add ROles anf Features Wizard
+    Before you Begin Page: next
+    Installation Type: next
+    Server Selection: next
+    Server Roles: Scroll to File and Storage Services click on arrow, 
+                  click on File and iSCSI Arrow, 
+                  check DFS Namespace and DFS Replication boxs
+                  click next
+    Features: next
+    Confirmation: install
+
+Add DFS Replication server role to both DFS1 and DFS2. Open the DFS Management Console under file & storage services on MGMT01.
+Right Click on dfs1-SARAH
+Select Add Roles and Features
+  Add ROles anf Features Wizard
+    Before you Begin Page: next
+    Installation Type: next
+    Server Selection: next
+    Server Roles: Scroll to File and Storage Services click on arrow, 
+                  click on File and iSCSI Arrow, 
+                  check DFS Replication boxs
+                  click next
+    Features: next
+    Confirmation: install  
+Right Click on dfs2-SARAH
+Select Add Roles and Features
+  Add ROles anf Features Wizard
+    Before you Begin Page: next
+    Installation Type: next
+    Server Selection: next
+    Server Roles: Scroll to File and Storage Services click on arrow, 
+                  click on File and iSCSI Arrow, 
+                  check DFS Replication boxs
+                  click next
+    Features: next
+    Confirmation: install  
+
+
+Configure DFS Namespace
+Create a new DFS Namespace on MGMT01, making it a namespace server.
+Name the namespace “dfsshare”, editing the share permissions to allow all users read & write to a local path of C:\DFSRoots\dfshare for a domain-based namespace. See screenshot below.
+Select a domain-based namespace to create. When finished, your domain-based DFS Namespace should look like below:
+CLick File and Storage Services
+Right Click on MGMT01-SARAH
+Select DFS Managment
+  Right click on Namespace
+  Select New Namespace
+    New Namespace Wizard
+      Namespace Server: mgmt01-sarah, next
+      Namespace Name and Settings: dfsshare, Edit settings: All users have read and write permissions, ok, next
+      Namespace Type: next
+      Review Settings and Create Namespace: create
+      Confirmation
+      
+Creating a folder in the DFS Namespace
+Create a new folder in your DFS Namespace called SYS265, and add Folder Targets from DFS1 and DFS2.
+Yes, you will want to create a replication group to sync the folder targets. 
+Which then prompts to create a Replicate Folder for DFS Replication:
+
+Right click on \\sarah.local\dfsshare
+Select new folder
+Name it SYS265
+Add Folder Targets:
+  Add
+  \\dsf1-sarah\dsf1
+  \\dsf2-sarah\dsf2
+Click ok
+Click yes
+Replicate Folder Wizard
+Replication Froup and Replicated Folder Name: next
+Replication Eligibility: next
+Primary Member: DFS1-SARAH
+Topology Selection: next
+Replication Group Schedule and Bandwidth: next
+Revie Settings and Create Replication Group: next
+Confirmation
+  Click ok
+  
