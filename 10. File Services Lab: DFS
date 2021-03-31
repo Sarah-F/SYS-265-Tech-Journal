@@ -226,6 +226,9 @@ Creating a folder in the DFS Namespace
 Create a new folder in your DFS Namespace called SYS265, and add Folder Targets from DFS1 and DFS2.
 Yes, you will want to create a replication group to sync the folder targets. 
 Which then prompts to create a Replicate Folder for DFS Replication:
+Make certain to add both DFS1 & DFS2 to the DFS Replication Group:
+Full Mesh with default settings to connect all DFS parties involved.
+All things in life should be green with checkmarks:
 
 Right click on \\sarah.local\dfsshare
 Select new folder
@@ -245,4 +248,47 @@ Replication Group Schedule and Bandwidth: next
 Revie Settings and Create Replication Group: next
 Confirmation
   Click ok
-  
+
+
+Back on WKS01, you should be able to access the test file three ways: DFS1’s share, DFS2’s share, and via the new DFS share:
+Log onto WKS01
+Open powershell
+$whoami
+$hostname
+$ls \\sarah.local\dfsshare\SYS265
+$ls \\dfs1-sarah\dfs1
+$ls \\dfs2-sarah\dfs2
+(notice how on dfs2 it shows dfs1.txt)
+
+Create dfs-share1.txt on \\yourname.local\dfsshare\SYS265.
+On WKS01-sarah, in powershell
+$echo "DFSSHARE FILE1" >> \\sarah.local\dfsshare\SYS265\dfs-share1.txt
+$ls \\sarah.local\dfsshare\SYS265
+$ls \\dfs1-sarah\dfs1
+$ls \\dfs2-sarah\dfs2
+
+Time to Break Things
+In vSphere, disable the Network on DFS1. Then on WKS01, attempt to access the same 3 shares through file explorer or powershell:
+Go to Vsphere Client page, open settings, on Network Adapter 1, uncheck the connected box, click ok
+
+Deliverable 4. Screenshot showing DFS1 down while DFS2’s share and the DFS share available. 
+On WKS01-sarah, in powershell
+$ls \\sarah.local\dfsshare\SYS265
+$ls \\dfs1-sarah\dfs1
+$ls \\dfs2-sarah\dfs2
+
+Conduct the following tests.
+With DFS1 still down, add a file to \\dfs2\dfs2 called dfs2-test2.txt
+Re-run the ls test above on both \\dfs2\dfs2 and on \\yourname.local\dfsshare\sys265
+Reconnect DFS1 and do the ls test on \\dfs1\dfs1
+Deliverable 6.  Provide a screenshot that illustrates this test
+On WKS01-sarah, in powershell
+$echo "DFS TEST 2 on DFS2" \\dfs2-sarah\dfs2\dfs2-test2.txt
+$ls \\dfs2-sarah\dfs2
+$ls \\sarah.local\dfsshare\SYS265
+Go to Vsphere Client page, open settings, on Network Adapter 1, recheck the connected box, click ok
+Go back to WKS01-sarah, in powershell
+$echo "RECONNECT DFS1 NOW AND HANGOUT FOR A MINUTE"
+$ls \\dfs1-sarah\dfs1
+
+
