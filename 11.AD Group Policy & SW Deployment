@@ -1,0 +1,21 @@
+Prepare an OU, user & workstation
+Before we get into configuring a Group Policy Object (GPO) within Active Directory (AD), let’s set the AD stage to deploy a software package. Via AD Users & Computers, create a Test OU.
+Open MGMT01
+Make sure FW01 and AD01 is turned on
+On MGMT01, click tools and select Active Directory Users and Computers
+  Right click on sarah.local
+  Select New
+  Select Organizational Unit, name it Test OU
+  Right click on Test OU
+  Select new
+  Select User, name it sarah
+  Click on Computers
+  Right click on WKS01-SARAH
+  Select move, move to Test OU folder
+For some fun … use Powershell on AD01 via MGMT01 to figure out how to create another OU called “Software Deploy”, move WKS01 and your regular named account into it, and then delete the Test OU.
+Open AD01
+$powershell (opens powershell)
+$New-ADOrganizationalUnit -Name "Software Deploy"
+$Move-ADObject -Identity "OU=Test OU,CN=WKS01-SARAH" -TargetPath "OU=Software Deploy"
+https://petri.com/creating-active-directory-ous-powershell
+https://blog.netwrix.com/2018/06/26/managing-ous-and-moving-their-objects-with-powershell/
