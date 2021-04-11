@@ -17,5 +17,8 @@ Open AD01
 $powershell (opens powershell)
 $New-ADOrganizationalUnit -Name "Software Deploy"
 $Move-ADObject -Identity "OU=Test OU,CN=WKS01-SARAH" -TargetPath "OU=Software Deploy"
+$Move-ADObject -Identity "OU=Test OU,CN=WKS01-SARAH,DC=sarah,DC=local" -TargetPath "OU=Software Deploy"
+$Move-ADObject -Identity "CN=WKS01-SARAH,OU=Test OU,DC=sarah,DC=local" -TargetPath "OU=Software Deploy"
+
 https://petri.com/creating-active-directory-ous-powershell
 https://blog.netwrix.com/2018/06/26/managing-ous-and-moving-their-objects-with-powershell/
