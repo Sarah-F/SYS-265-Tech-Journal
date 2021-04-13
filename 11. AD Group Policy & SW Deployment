@@ -1,7 +1,7 @@
 Prepare an OU, user & workstation
 Before we get into configuring a Group Policy Object (GPO) within Active Directory (AD), let’s set the AD stage to deploy a software package. Via AD Users & Computers, create a Test OU.
 Open MGMT01
-Make sure FW01 and AD01 is turned on
+Make sure FW01, AD01, WKS01 is turned on
 On MGMT01, click tools and select Active Directory Users and Computers
   Right click on sarah.local
   Select New
@@ -16,9 +16,29 @@ For some fun … use Powershell on AD01 via MGMT01 to figure out how to create a
 Open AD01
 $powershell (opens powershell)
 $New-ADOrganizationalUnit -Name "Software Deploy"
-$Move-ADObject -Identity "OU=Test OU,CN=WKS01-SARAH" -TargetPath "OU=Software Deploy"
-$Move-ADObject -Identity "OU=Test OU,CN=WKS01-SARAH,DC=sarah,DC=local" -TargetPath "OU=Software Deploy"
-$Move-ADObject -Identity "CN=WKS01-SARAH,OU=Test OU,DC=sarah,DC=local" -TargetPath "OU=Software Deploy"
-
+$Move-ADObject -Identity "CN=WKS01-SARAH,OU=Test OU,DC=sarah,DC=local" --TargetPath "OU=Software Deploy,DC=sarah,DC=local"
+On MGMT, Under Test OU catagory, delete sarah user
+$Get-ADOrganizationalUnit -Identity "OU=Test OU,DC=sarah,DC=local" | Set-ADObject -ProtectedFromAccidentalDeletion:$false -PassThru | Remove-ADOrganizationalUnit -Confirm:$false
 https://petri.com/creating-active-directory-ous-powershell
 https://blog.netwrix.com/2018/06/26/managing-ous-and-moving-their-objects-with-powershell/
+
+Deploying Software via GPO
+One popular GPO feature is deploying software across an AD domain.
+On MGMT01, download Putty’s x64-bit Windows Installer Package (uses the .msi file extension). 
+Next, create a Share on MGMT01 named ‘Software’ and place Putty’s .msi in it, so users and computers (via GPO) can access & install it.
+Go to MGMT01,
+Openweb browser, Type putty chiark in search bar, open first link
+Download Putty’s x64-bit Windows Installer Package (uses the .msi file extension). 
+In the download, click save to desktop
+On MGMT01, click Files and Storage Services
+  Select Shares
+  Right click on mgmt01 and select New Share
+   New Share Wizard
+    Select Profile: SMB Share - Quick, next
+    Share Locations: mgmt01, next
+    Share Name: Software, next
+    Authentification: next
+    Share Permissions: next
+    Permissions: next
+  Right click on the Software share under MGMT01
+  Select Open Shares
