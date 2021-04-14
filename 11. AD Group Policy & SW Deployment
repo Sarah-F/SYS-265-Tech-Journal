@@ -84,6 +84,6 @@ One screenshot of Event Viewer using the GUI displaying the only single System i
 One screenshot of Powershell displaying the only single System information event log from source Application Management Group Policy which validates “The install of application PuTTY release 0.74 (64-bit) from policy Deploy SW succeeded” on WKS01. 
   On WKS01
   Open powershell
-  Get-EventLog -LogName System | Where-Object {$_.EventID -eq 302}
+  $Get-EventLog -LogName System | Where-Object {$_.EventID -eq 302}
 https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-eventlog?view=powershell-5.1
 
